@@ -1,7 +1,15 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    "compilerOptions": {
+        "typeRoots": ["node_modules/@types"],
+        "types": ["vite/client"],
+        "composite": true, // 프로젝트 간 참조를 위해 필요
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@assets/*": ["src/assets/*"],
+            "@components/*": ["src/components/*"]
+        }
+    },
+    "files": [],
+    "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

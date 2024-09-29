@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import warning from "@/assets/warning.svg";
 import checked from "@/assets/checked.svg";
 
-const Toast = ({ setToast, message, messageType = "checked", timeout = 2000 }: { setToast: React.Dispatch<React.SetStateAction<boolean>>; message: string; messageType: "warning" | "checked"; timeout: number }) => {
+const Toast = ({ setToast, message, messageType = "checked", timeout = 2000 }: { setToast: React.Dispatch<React.SetStateAction<boolean>>; message: string; messageType: "warning" | "checked"; timeout?: number }) => {
     const [isFadingOut, setIsFadingOut] = useState(false);
     const icon = { warning: warning, checked: checked };
 

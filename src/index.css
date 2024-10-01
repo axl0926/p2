@@ -6,4 +6,12 @@
 
 * {
     font-family: "Spoqa Han Sans Neo", "sans-serif";
+    box-sizing: border-box;
+}
+.fc-toolbar-title {
+    display: inline-block;
+}
+
+.fc-dayGridMonth-view tr {
+    height: calc(100% / 6);
 }

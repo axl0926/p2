@@ -14,17 +14,24 @@ import "@/pages/calendar.css";
 import Toast from "@components/common/Toast";
 import EventDetail from "@components/features/EventDetail";
 import RemoveModal from "@/components/layout/RemoveModal";
+import { useStore } from "@/context/useStore";
+
 const Schedule = () => {
-  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
-  const [isAddEventToastOpen, setIsAddEventToastOpen] = useState(false);
-  const [isDeleteEventToastOpen, setIsDeleteEventToastOpen] = useState(false);
-  const [isEventDetailOpen, setIsEventDetailOpen] = useState(false);
-  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
-  const [isEditModal, setIsEditModal] = useState(false);
+  const isEventModalOpen = useStore((state) => state.isEventModalOpen);
+  const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
+  const isAddEventToastOpen = useStore((state) => state.isAddEventToastOpen);
+  const isDeleteEventToastOpen = useStore(
+    (state) => state.isDeleteEventToastOpen,
+  );
+  const isEventDetailOpen = useStore((state) => state.isEventDetailOpen);
+  const setIsEventDetailOpen = useStore((state) => state.setIsEventDetailOpen);
+  const isRemoveModalOpen = useStore((state) => state.isRemoveModalOpen);
+
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [events, setEvents] = useState<EventInput[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<EventApi>();
+
   const handleDateSelect = (selectInfo: DateSelectArg): void => {
     const calendarApi = selectInfo.view.calendar;
     setStartDate(selectInfo.start);
@@ -49,8 +56,9 @@ const Schedule = () => {
           right: "dayGridMonth,timeGridWeek",
         }}
         height="100%"
-        editable={true}
+        // editable={false}
         selectable={true}
+        dragScroll={false}
         select={handleDateSelect}
         events={events}
         eventClick={handleEventClick}
@@ -63,39 +71,21 @@ const Schedule = () => {
       />
       {isEventModalOpen && (
         <EventModal
-          setIsEventModalOpen={setIsEventModalOpen}
           start={startDate}
           end={endDate}
           event={selectedEvent}
           setEvents={setEvents}
-          setToast={setIsAddEventToastOpen}
-          isEditModal={isEditModal}
-          setIsEditModal={setIsEditModal}
         />
       )}
 
       {isAddEventToastOpen && (
-        <Toast
-          setToast={setIsAddEventToastOpen}
-          messageType="checked"
-          message="일정이 추가되었습니다."
-        />
+        <Toast messageType="checked" message="일정이 추가되었습니다." />
       )}
       {isDeleteEventToastOpen && (
-        <Toast
-          setToast={setIsDeleteEventToastOpen}
-          messageType="warning"
-          message="일정이 삭제되었습니다."
-        />
+        <Toast messageType="warning" message="일정이 삭제되었습니다." />
       )}
       {isEventDetailOpen && selectedEvent && (
-        <EventDetail
-          setIsRemoveModalOpen={setIsRemoveModalOpen}
-          selectedEvent={selectedEvent}
-          setIsEventDetailOpen={setIsEventDetailOpen}
-          setIsEditModal={setIsEditModal}
-          setIsEventModalOpen={setIsEventModalOpen}
-        />
+        <EventDetail selectedEvent={selectedEvent} />
       )}
       {isRemoveModalOpen && selectedEvent && (
         <RemoveModal
@@ -103,8 +93,6 @@ const Schedule = () => {
             selectedEvent.remove();
             setEvents(events.filter((event) => event.id !== selectedEvent.id));
           }}
-          setIsDeleteEventToastOpen={setIsDeleteEventToastOpen}
-          setIsRemoveModalOpen={setIsRemoveModalOpen}
         />
       )}
     </div>

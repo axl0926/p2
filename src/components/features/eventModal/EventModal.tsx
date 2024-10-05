@@ -4,25 +4,31 @@ import TimeSelect from "@/components/features/eventModal/TimeSelect";
 import EventTitleInput from "@/components/features/eventModal/EventTitleInput";
 import { useState } from "react";
 import { EventApi, EventInput } from "@fullcalendar/core/index.js";
+import { useStore } from "@/context/useStore";
+
 const EventModal = ({
-  setIsEventModalOpen,
   start,
   end,
   setEvents,
-  setToast,
   event,
-  isEditModal,
-  setIsEditModal,
 }: {
-  setIsEventModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setEvents: React.Dispatch<React.SetStateAction<EventInput[]>>;
-  setToast: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsEditModal: React.Dispatch<React.SetStateAction<boolean>>;
   start: Date | undefined;
   end: Date | undefined;
   event?: EventApi;
-  isEditModal: boolean;
 }) => {
+  const setIsEditModal = useStore((state) => state.setIsEditModal);
+  const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
+  const isEditModal = useStore((state) => state.isEditModal);
+  const setIsAddEventToastOpen = useStore(
+    (state) => state.setIsAddEventToastOpen,
+  );
+
+  console.log(event);
+  console.log(event?.start && isEditModal ? event.start : start,);
+  console.log( event?.end && isEditModal ? event.end : end,);
+  console.log(event?.start);
+  console.log(event?.end);
   const [isTimeSelectVisible, setIsTimeSelectVisible] = useState(
     isEditModal && !event?.allDay ? true : false,
   );
@@ -41,18 +47,34 @@ const EventModal = ({
     setIsEventModalOpen(false);
   };
   const handleSave = () => {
-    setEvents((events) => [
-      ...events,
-      {
-        id: `${events.length > 0 ? parseInt(events[events.length - 1].id as string) + 1 : 1}`,
-        title: eventTitle,
-        start: startDate,
-        end: endDate,
-        allDay: isTimeSelectVisible ? false : true,
-      },
-    ]);
-    setToast(true);
+    if (isEditModal && event) {
+      setEvents((events) =>
+        events.map((e) =>
+          e.id === event.id
+            ? {
+                ...e,
+                title: eventTitle,
+                start: startDate,
+                end: endDate,
+                allDay: isTimeSelectVisible ? false : true,
+              }
+            : e,
+        ),
+      );
+    } else {
+      setEvents((events) => [
+        ...events,
+        {
+          id: `${events.length > 0 ? parseInt(events[events.length - 1].id as string) + 1 : 1}`,
+          title: eventTitle,
+          start: startDate,
+          end: endDate,
+          allDay: isTimeSelectVisible ? false : true,
+        },
+      ]);
+    }
     setIsEditModal(false);
+    setIsAddEventToastOpen(true);
     handleClose();
   };
   const getDefaultTime = (date: Date | undefined): number[] | undefined => {
@@ -84,11 +106,10 @@ const EventModal = ({
           <div className="flex w-full justify-between">
             <DateSelect
               dataType="start"
-              defaultDate={start}
+              defaultDate={startDate}
               setDate={setStartDate}
             />
-
-            <DateSelect dataType="end" defaultDate={end} setDate={setEndDate} />
+            <DateSelect dataType="end" defaultDate={endDate} setDate={setEndDate} />
           </div>
           {isTimeSelectVisible && (
             <div>

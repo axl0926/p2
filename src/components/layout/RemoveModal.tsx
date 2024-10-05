@@ -1,14 +1,11 @@
 import warning from "@/assets/warning.svg";
+import { useStore } from "@/context/useStore";
 
-const RemoveModal = ({
-  deleteFc,
-  setIsRemoveModalOpen,
-  setIsDeleteEventToastOpen,
-}: {
-  deleteFc: () => void;
-  setIsRemoveModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsDeleteEventToastOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const RemoveModal = ({ deleteFc }: { deleteFc: () => void }) => {
+  const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
+  const setIsDeleteEventToastOpen = useStore(
+    (state) => state.setIsDeleteEventToastOpen,
+  );
   const handleDelete = () => {
     deleteFc();
     setIsDeleteEventToastOpen(true);

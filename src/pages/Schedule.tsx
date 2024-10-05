@@ -15,21 +15,17 @@ import Toast from "@components/common/Toast";
 import EventDetail from "@components/features/EventDetail";
 import RemoveModal from "@components/common/RemoveModal";
 import { useStore } from "@/context/useStore";
+import { useToast } from "@/utils/toastUtils";
 
 const Schedule = () => {
   const isEventModalOpen = useStore((state) => state.isEventModalOpen);
   const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
-  const isAddEventToastOpen = useStore((state) => state.isAddEventToastOpen);
-  const isDeleteEventToastOpen = useStore(
-    (state) => state.isDeleteEventToastOpen,
-  );
+  const isToastOpen = useStore((state) => state.isToastOpen);
+  const { showToast } = useToast();
   const isEventDetailOpen = useStore((state) => state.isEventDetailOpen);
   const setIsEventDetailOpen = useStore((state) => state.setIsEventDetailOpen);
   const isRemoveModalOpen = useStore((state) => state.isRemoveModalOpen);
   const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
-  const setIsDeleteEventToastOpen = useStore(
-    (state) => state.setIsDeleteEventToastOpen,
-  );
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -54,7 +50,7 @@ const Schedule = () => {
     if (selectedEvent) {
       selectedEvent.remove();
       setEvents(events.filter((event) => event.id !== selectedEvent.id));
-      setIsDeleteEventToastOpen(true);
+      showToast("일정이 삭제되었습니다.", "warning");
       setIsRemoveModalOpen(false);
     }
   };
@@ -90,18 +86,12 @@ const Schedule = () => {
         />
       )}
 
-      {isAddEventToastOpen && (
-        <Toast messageType="checked" message="일정이 추가되었습니다." />
-      )}
-      {isDeleteEventToastOpen && (
-        <Toast messageType="warning" message="일정이 삭제되었습니다." />
-      )}
+      {isToastOpen && <Toast />}
+
       {isEventDetailOpen && selectedEvent && (
         <EventDetail selectedEvent={selectedEvent} />
       )}
-      {isRemoveModalOpen && selectedEvent && (
-        <RemoveModal deleteFc={eventDelete} />
-      )}
+      {isRemoveModalOpen && <RemoveModal deleteFc={eventDelete} />}
     </div>
   );
 };

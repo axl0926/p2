@@ -5,7 +5,7 @@ import EventTitleInput from "@/components/features/eventModal/EventTitleInput";
 import { useState } from "react";
 import { EventApi, EventInput } from "@fullcalendar/core/index.js";
 import { useStore } from "@/context/useStore";
-
+import { useToast } from "@/utils/toastUtils";
 const EventModal = ({
   start,
   end,
@@ -17,12 +17,11 @@ const EventModal = ({
   end: Date | undefined;
   event?: EventApi;
 }) => {
+  const { showToast } = useToast();
   const setIsEditModal = useStore((state) => state.setIsEditModal);
   const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
   const isEditModal = useStore((state) => state.isEditModal);
-  const setIsAddEventToastOpen = useStore(
-    (state) => state.setIsAddEventToastOpen,
-  );
+
   const [isTimeSelectVisible, setIsTimeSelectVisible] = useState(
     isEditModal && !event?.allDay ? true : false,
   );
@@ -68,7 +67,7 @@ const EventModal = ({
       ]);
     }
     setIsEditModal(false);
-    setIsAddEventToastOpen(true);
+    showToast("일정이 추가되었습니다.", "checked");
     handleClose();
   };
   const getDefaultTime = (date: Date | undefined): number[] | undefined => {

@@ -23,12 +23,6 @@ const EventModal = ({
   const setIsAddEventToastOpen = useStore(
     (state) => state.setIsAddEventToastOpen,
   );
-
-  console.log(event);
-  console.log(event?.start && isEditModal ? event.start : start,);
-  console.log( event?.end && isEditModal ? event.end : end,);
-  console.log(event?.start);
-  console.log(event?.end);
   const [isTimeSelectVisible, setIsTimeSelectVisible] = useState(
     isEditModal && !event?.allDay ? true : false,
   );
@@ -109,7 +103,11 @@ const EventModal = ({
               defaultDate={startDate}
               setDate={setStartDate}
             />
-            <DateSelect dataType="end" defaultDate={endDate} setDate={setEndDate} />
+            <DateSelect
+              dataType="end"
+              defaultDate={endDate}
+              setDate={setEndDate}
+            />
           </div>
           {isTimeSelectVisible && (
             <div>

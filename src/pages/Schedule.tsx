@@ -13,7 +13,7 @@ import {
 import "@/pages/calendar.css";
 import Toast from "@components/common/Toast";
 import EventDetail from "@components/features/EventDetail";
-import RemoveModal from "@/components/layout/RemoveModal";
+import RemoveModal from "@components/common/RemoveModal";
 import { useStore } from "@/context/useStore";
 
 const Schedule = () => {
@@ -26,6 +26,10 @@ const Schedule = () => {
   const isEventDetailOpen = useStore((state) => state.isEventDetailOpen);
   const setIsEventDetailOpen = useStore((state) => state.setIsEventDetailOpen);
   const isRemoveModalOpen = useStore((state) => state.isRemoveModalOpen);
+  const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
+  const setIsDeleteEventToastOpen = useStore(
+    (state) => state.setIsDeleteEventToastOpen,
+  );
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -46,6 +50,14 @@ const Schedule = () => {
     }
   };
 
+  const eventDelete = () => {
+    if (selectedEvent) {
+      selectedEvent.remove();
+      setEvents(events.filter((event) => event.id !== selectedEvent.id));
+      setIsDeleteEventToastOpen(true);
+      setIsRemoveModalOpen(false);
+    }
+  };
   return (
     <div className="h-screen w-[calc(100vw-300px)] p-2">
       <FullCalendar
@@ -56,7 +68,7 @@ const Schedule = () => {
           right: "dayGridMonth,timeGridWeek",
         }}
         height="100%"
-        // editable={false}
+        editable={false}
         selectable={true}
         dragScroll={false}
         select={handleDateSelect}
@@ -88,12 +100,7 @@ const Schedule = () => {
         <EventDetail selectedEvent={selectedEvent} />
       )}
       {isRemoveModalOpen && selectedEvent && (
-        <RemoveModal
-          deleteFc={() => {
-            selectedEvent.remove();
-            setEvents(events.filter((event) => event.id !== selectedEvent.id));
-          }}
-        />
+        <RemoveModal deleteFc={eventDelete} />
       )}
     </div>
   );

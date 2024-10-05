@@ -10,6 +10,19 @@ const EventDetail = ({ selectedEvent }: { selectedEvent: EventApi }) => {
   const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
   const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
 
+  const handleEdit = () => {
+    setIsEditModal(true);
+    setIsEventModalOpen(true);
+    setIsEventDetailOpen(false);
+  };
+  const handleDelete = () => {
+    setIsRemoveModalOpen(true);
+    setIsEventDetailOpen(false);
+  };
+  const handleClose = () => {
+    setIsEventDetailOpen(false);
+  };
+
   return (
     <div className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center bg-[#00000020]">
       <div
@@ -21,27 +34,14 @@ const EventDetail = ({ selectedEvent }: { selectedEvent: EventApi }) => {
             <MdOutlineModeEdit
               color="#79747E"
               size="18px"
-              onClick={() => {
-                setIsEditModal(true);
-                setIsEventModalOpen(true);
-                setIsEventDetailOpen(false);
-              }}
+              onClick={handleEdit}
             />
             <RiDeleteBin6Line
               color="#79747E"
               size="18px"
-              onClick={() => {
-                setIsRemoveModalOpen(true);
-                setIsEventDetailOpen(false);
-              }}
+              onClick={handleDelete}
             />
-            <IoMdClose
-              color="#79747E"
-              size="18px"
-              onClick={() => {
-                setIsEventDetailOpen(false);
-              }}
-            />
+            <IoMdClose color="#79747E" size="18px" onClick={handleClose} />
           </div>
         </div>
         <div>{`${selectedEvent.start?.getMonth()}월${selectedEvent.start?.getDate()}일${selectedEvent.start?.getHours()}:${selectedEvent.start?.getMinutes()} ~ ${selectedEvent.end?.getMonth()}월${selectedEvent.end?.getDate()}일${selectedEvent.end?.getHours()}:${selectedEvent.end?.getMinutes()}`}</div>

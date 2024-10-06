@@ -1,37 +1,39 @@
 import { IoMdClose } from "react-icons/io";
 import DateSelect from "@/components/features/eventModal/DateSelect";
-import TimeSelect from "@/components/features/eventModal/TimeSelect";
+import TimeSelect from "@/components/common/TimeSelect";
 import EventTitleInput from "@/components/features/eventModal/EventTitleInput";
 import { useState } from "react";
-import { EventApi, EventInput } from "@fullcalendar/core/index.js";
-import { useStore } from "@/context/useStore";
+import { EventApi } from "@fullcalendar/core/index.js";
+import { useUIStateStore } from "@/context/useUIStateStore";
+import { useEventsStore } from "@/context/useEventsStore";
 import { useToast } from "@/utils/toastUtils";
 const EventModal = ({
   start,
   end,
-  setEvents,
   event,
 }: {
-  setEvents: React.Dispatch<React.SetStateAction<EventInput[]>>;
-  start: Date | undefined;
-  end: Date | undefined;
+  start: Date;
+  end: Date;
   event?: EventApi;
 }) => {
   const { showToast } = useToast();
-  const setIsEditModal = useStore((state) => state.setIsEditModal);
-  const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
-  const isEditModal = useStore((state) => state.isEditModal);
-
+  const setIsEditModal = useUIStateStore((state) => state.setIsEditModal);
+  const setIsEventModalOpen = useUIStateStore(
+    (state) => state.setIsEventModalOpen,
+  );
+  const isEditModal = useUIStateStore((state) => state.isEditModal);
+  const setEvents = useEventsStore((state) => state.setEvents);
+  const events = useEventsStore((state) => state.events);
   const [isTimeSelectVisible, setIsTimeSelectVisible] = useState(
     isEditModal && !event?.allDay ? true : false,
   );
   const [eventTitle, setEventTitle] = useState(
     event && isEditModal ? event.title : "",
   );
-  const [startDate, setStartDate] = useState<Date | undefined>(
+  const [startDate, setStartDate] = useState<Date>(
     event?.start && isEditModal ? event.start : start,
   );
-  const [endDate, setEndDate] = useState<Date | undefined>(
+  const [endDate, setEndDate] = useState<Date>(
     event?.end && isEditModal ? event.end : end,
   );
 
@@ -41,7 +43,7 @@ const EventModal = ({
   };
   const handleSave = () => {
     if (isEditModal && event) {
-      setEvents((events) =>
+      setEvents(
         events.map((e) =>
           e.id === event.id
             ? {
@@ -55,7 +57,7 @@ const EventModal = ({
         ),
       );
     } else {
-      setEvents((events) => [
+      setEvents([
         ...events,
         {
           id: `${events.length > 0 ? parseInt(events[events.length - 1].id as string) + 1 : 1}`,

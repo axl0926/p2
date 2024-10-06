@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import warning from "@/assets/warning.svg";
 import checked from "@/assets/checked.svg";
-import { useStore } from "@/context/useStore";
+import { useUIStateStore } from "@/context/useUIStateStore";
 
 const Toast = () => {
-  const message = useStore((state) => state.message);
-  const messageType = useStore((state) => state.messageType);
-  const toastUpdateCount = useStore((state) => state.toastUpdateCount);
-  const setIsToastOpen = useStore((state) => state.setIsToastOpen);
+  const message = useUIStateStore((state) => state.message);
+  const messageType = useUIStateStore((state) => state.messageType);
+  const toastUpdateCount = useUIStateStore((state) => state.toastUpdateCount);
+  const setIsToastOpen = useUIStateStore((state) => state.setIsToastOpen);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const icon = { warning: warning, checked: checked };
 

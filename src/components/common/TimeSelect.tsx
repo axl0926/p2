@@ -17,7 +17,7 @@ const TimeSelect = ({
   defaultTime,
 }: {
   dataType: "start" | "end";
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: React.Dispatch<React.SetStateAction<Date>>;
   defaultTime?: number[];
 }) => {
   const text = dataType === "start" ? "시작시간" : "종료시간";
@@ -45,7 +45,7 @@ const TimeSelect = ({
     }
   };
   return (
-    <div className="flex w-1/2 flex-col p-2">
+    <div className="flex w-full flex-col p-2">
       <div>{text}</div>
       <div className="flex justify-between">
         <Select
@@ -54,7 +54,7 @@ const TimeSelect = ({
           defaultValue={defaultTime&&hourOptions.find(
             (option) => option.value === defaultTime[0],
           )}
-          classNames={{ container: () => "w-[45%]" }}
+          classNames={{ container: () => "w-[48%]" }}
           onChange={handleHourChange}
         />
         <Select
@@ -63,7 +63,7 @@ const TimeSelect = ({
           defaultValue={defaultTime&&minuteOptions.find(
             (option) => option.value === defaultTime[1],
           )}
-          classNames={{ container: () => "w-[45%]" }}
+          classNames={{ container: () => "w-[48%]" }}
           onChange={handleMinuteChange}
         />
       </div>

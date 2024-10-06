@@ -1,55 +1,58 @@
 :root {
-    --fc-border-color: transparent;
-    --fc-neutral-text-color: #252525;
-    --fc-daygrid-event-dot-width: 5px;
+  --fc-border-color: transparent;
+  --fc-neutral-text-color: #252525;
+  --fc-daygrid-event-dot-width: 5px;
 
-    --fc-button-text-color: black;
-    --fc-button-bg-color: white;
-    --fc-button-border-color: #e5e5e5;
+  --fc-button-text-color: black;
+  --fc-button-bg-color: white;
+  --fc-button-border-color: #e5e5e5;
 
-    --fc-button-hover-bg-color: #907ad695;
-    --fc-button-hover-border-color: transparent;
+  --fc-button-hover-bg-color: #907ad695;
+  --fc-button-hover-border-color: transparent;
 
-    --fc-button-active-bg-color: #907ad6;
-    --fc-button-active-border-color: transparent;
+  --fc-button-active-bg-color: #907ad6;
+  --fc-button-active-border-color: transparent;
 
-    --fc-event-bg-color: #c5b4fb;
-    --fc-event-border-color: transparent;
-    --fc-event-text-color: black;
+  --fc-event-bg-color: #c5b4fb;
+  --fc-event-border-color: transparent;
+  --fc-event-text-color: black;
 }
 
+.fc .fc-day.fc-day-today {
+  background-color: #c4b4fb4d;
+}
 .fc button.fc-button.fc-button-active {
-    color: white !important;
+  color: white !important;
 }
 .fc .fc-daygrid-day-top {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
 }
 .fc .fc-daygrid-day-frame {
-    transition:background-color 0.3s;
-    border-top: 1px solid #0000004d;
+  transition: background-color 0.3s;
+  border-top: 1px solid #0000004d;
 }
 .fc .fc-daygrid-day-frame:hover {
-    background-color: #c4b4fb4d;
+  background-color: #c4b4fb4d;
 }
 .fc .fc-daygrid-day-frame .fc-daygrid-day-top a {
-    border-radius: 999px;
-    transition:color 0.3s;
-    transition:background-color 0.3s;
-    text-align: center;
-    width: 2rem;
-    height: 2rem;
+  border-radius: 999px;
+  transition: color 0.3s;
+  transition: background-color 0.3s;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
 }
 .fc .fc-daygrid-day-frame:hover .fc-daygrid-day-top a {
-    background-color: #907ad6;
-    color:white
+  background-color: #907ad6;
+  color: white;
 }
 
 .fc-prev-button.fc-button.fc-button-primary,
 .fc-next-button.fc-button.fc-button-primary {
-    border: none;
+  border: none;
 }
 .fc-toolbar-chunk {
-    display: flex;
+  display: flex;
 }

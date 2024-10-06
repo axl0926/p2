@@ -1,10 +1,10 @@
-import { useStore } from "@/context/useStore";
+import { useUIStateStore } from "@/context/useUIStateStore";
 
 export const useToast = () => {
-  const setMessage = useStore((state) => state.setMessage);
-  const setMessageType = useStore((state) => state.setMessageType);
-  const setIsToastOpen = useStore((state) => state.setIsToastOpen);
-  const incrementToastUpdateCount = useStore(
+  const setMessage = useUIStateStore((state) => state.setMessage);
+  const setMessageType = useUIStateStore((state) => state.setMessageType);
+  const setIsToastOpen = useUIStateStore((state) => state.setIsToastOpen);
+  const incrementToastUpdateCount = useUIStateStore(
     (state) => state.incrementToastUpdateCount,
   );
   const showToast = (message: string, messageType: "warning" | "checked") => {

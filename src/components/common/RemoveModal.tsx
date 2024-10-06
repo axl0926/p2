@@ -1,8 +1,10 @@
 import warning from "@/assets/warning.svg";
-import { useStore } from "@/context/useStore";
+import { useUIStateStore } from "@/context/useUIStateStore";
 
 const RemoveModal = ({ deleteFc }: { deleteFc: () => void }) => {
-  const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
+  const setIsRemoveModalOpen = useUIStateStore(
+    (state) => state.setIsRemoveModalOpen,
+  );
 
   const modalClose = () => {
     setIsRemoveModalOpen(false);

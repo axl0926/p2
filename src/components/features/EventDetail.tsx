@@ -2,13 +2,19 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
 import { EventApi } from "@fullcalendar/core/index.js";
-import { useStore } from "@/context/useStore";
+import { useUIStateStore } from "@/context/useUIStateStore";
 
 const EventDetail = ({ selectedEvent }: { selectedEvent: EventApi }) => {
-  const setIsEventDetailOpen = useStore((state) => state.setIsEventDetailOpen);
-  const setIsEditModal = useStore((state) => state.setIsEditModal);
-  const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
-  const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
+  const setIsEventDetailOpen = useUIStateStore(
+    (state) => state.setIsEventDetailOpen,
+  );
+  const setIsEditModal = useUIStateStore((state) => state.setIsEditModal);
+  const setIsEventModalOpen = useUIStateStore(
+    (state) => state.setIsEventModalOpen,
+  );
+  const setIsRemoveModalOpen = useUIStateStore(
+    (state) => state.setIsRemoveModalOpen,
+  );
 
   const handleEdit = () => {
     setIsEditModal(true);

@@ -8,28 +8,35 @@ import {
   DateSelectArg,
   EventApi,
   EventClickArg,
-  EventInput,
 } from "@fullcalendar/core/index.js";
 import "@/pages/calendar.css";
 import Toast from "@components/common/Toast";
 import EventDetail from "@components/features/EventDetail";
 import RemoveModal from "@components/common/RemoveModal";
-import { useStore } from "@/context/useStore";
+import { useUIStateStore } from "@/context/useUIStateStore";
 import { useToast } from "@/utils/toastUtils";
+import { useEventsStore } from "@/context/useEventsStore";
 
 const Schedule = () => {
-  const isEventModalOpen = useStore((state) => state.isEventModalOpen);
-  const setIsEventModalOpen = useStore((state) => state.setIsEventModalOpen);
-  const isToastOpen = useStore((state) => state.isToastOpen);
+  const isEventModalOpen = useUIStateStore((state) => state.isEventModalOpen);
+  const setIsEventModalOpen = useUIStateStore(
+    (state) => state.setIsEventModalOpen,
+  );
+  const isToastOpen = useUIStateStore((state) => state.isToastOpen);
   const { showToast } = useToast();
-  const isEventDetailOpen = useStore((state) => state.isEventDetailOpen);
-  const setIsEventDetailOpen = useStore((state) => state.setIsEventDetailOpen);
-  const isRemoveModalOpen = useStore((state) => state.isRemoveModalOpen);
-  const setIsRemoveModalOpen = useStore((state) => state.setIsRemoveModalOpen);
+  const isEventDetailOpen = useUIStateStore((state) => state.isEventDetailOpen);
+  const setIsEventDetailOpen = useUIStateStore(
+    (state) => state.setIsEventDetailOpen,
+  );
+  const isRemoveModalOpen = useUIStateStore((state) => state.isRemoveModalOpen);
+  const setIsRemoveModalOpen = useUIStateStore(
+    (state) => state.setIsRemoveModalOpen,
+  );
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [events, setEvents] = useState<EventInput[]>([]);
+  const events = useEventsStore((state) => state.events);
+  const setEvents = useEventsStore((state) => state.setEvents);
   const [selectedEvent, setSelectedEvent] = useState<EventApi>();
 
   const handleDateSelect = (selectInfo: DateSelectArg): void => {
@@ -77,17 +84,10 @@ const Schedule = () => {
           },
         }}
       />
-      {isEventModalOpen && (
-        <EventModal
-          start={startDate}
-          end={endDate}
-          event={selectedEvent}
-          setEvents={setEvents}
-        />
+      {isEventModalOpen && startDate && endDate && (
+        <EventModal start={startDate} end={endDate} event={selectedEvent} />
       )}
-
       {isToastOpen && <Toast />}
-
       {isEventDetailOpen && selectedEvent && (
         <EventDetail selectedEvent={selectedEvent} />
       )}

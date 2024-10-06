@@ -1,20 +1,24 @@
-React
-Typescript
-Vite
-TailwindCSS
+
+# PPP
+
+
+## 페이지별 진행상황
+
+- Schedule : 기능 완료
+
+- Todolist : 기능 완료
+
+- news : 작업 중
 
 
 
 
-스케쥴 캘린더 - 기능 완료
-Todo - 기능 완료 
+## 필요작업
 
-news - 작업 예정
+- 급하게 기능부터 구현하느라 더러운 코드가 많아 정리 필요
 
+- style 정리 필요  
 
+- state 정리 필요  
 
-전체 
--급하게 기능부터 구현하느라 코드가 너무 더러움 
--style 정리 필요
--state 흐름 정리 필요
--엣지케이스 작업 필요
+- 엣지케이스 작업 필요

@@ -6,7 +6,9 @@ import { format } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useUIStateStore } from "@/context/useUIStateStore";
+import { useToast } from "@/utils/toastUtils";
 const TodoItem = ({ todo }: { todo: Todo }) => {
+  const { showToast } = useToast();
   const toggleTodoCompleted = useTodoStore(
     (state) => state.toggleTodoCompleted,
   );
@@ -37,7 +39,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
   };
   return (
     <div
-      className={`relative flex w-full items-center justify-between rounded-2xl px-4 py-2 shadow-todoItem ${todo.completed ? "bg-[#E6FAEA]" : "bg-white"}`}
+      className={`relative flex w-full cursor-pointer items-center justify-between rounded-2xl px-4 py-2 shadow-todoItem ${todo.completed ? "bg-[#E6FAEA]" : "bg-white"}`}
       onClick={() => {
         toggleTodoCompleted(todo.id);
       }}
@@ -83,20 +85,25 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
         <div
           className="flex w-[12%] items-center justify-center rounded-xl bg-[#907AD6] p-2"
           onClick={() => {
-            updateTodo(
-              todo.id,
-              todo.dueDate && date
-                ? {
-                    ...todo,
-                    title,
-                    dueDate: { date: date, allDay: isAllday },
-                  }
-                : { ...todo, title },
-            );
-            setDate(undefined);
-            setIsAllday(true);
-            setIsEditMode(false);
-            setIsEditingTodo(false);
+            if (title) {
+              updateTodo(
+                todo.id,
+                todo.dueDate && date
+                  ? {
+                      ...todo,
+                      title,
+                      dueDate: { date: date, allDay: isAllday },
+                    }
+                  : { ...todo, title },
+              );
+              showToast("수정 완료되었습니다.", "checked");
+              setDate(undefined);
+              setIsAllday(true);
+              setIsEditMode(false);
+              setIsEditingTodo(false);
+            } else {
+              showToast("할 일을 입력해주세요.", "warning");
+            }
           }}
         >
           <FaCheck color="white" size="24" />
@@ -112,7 +119,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
       )}
 
       {isMenuOpen && (
-        <div className="absolute -top-1/2 right-0 flex translate-x-1/3 flex-col rounded-xl bg-white p-2 shadow-todoItem">
+        <div className="absolute right-0 top-0 flex -translate-x-1/3 flex-col rounded-xl bg-white p-2 shadow-todoItem">
           <div
             className="border-b"
             onClick={() => {
@@ -126,6 +133,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
           <div
             className="border-t"
             onClick={() => {
+              showToast("삭제되었습니다.", "warning");
               removeTodo(todo.id);
             }}
           >

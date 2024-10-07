@@ -42,35 +42,39 @@ const EventModal = ({
     setIsEventModalOpen(false);
   };
   const handleSave = () => {
-    if (isEditModal && event) {
-      setEvents(
-        events.map((e) =>
-          e.id === event.id
-            ? {
-                ...e,
-                title: eventTitle,
-                start: startDate,
-                end: endDate,
-                allDay: isTimeSelectVisible ? false : true,
-              }
-            : e,
-        ),
-      );
+    if (eventTitle) {
+      if (isEditModal && event) {
+        setEvents(
+          events.map((e) =>
+            e.id === event.id
+              ? {
+                  ...e,
+                  title: eventTitle,
+                  start: startDate,
+                  end: endDate,
+                  allDay: isTimeSelectVisible ? false : true,
+                }
+              : e,
+          ),
+        );
+      } else {
+        setEvents([
+          ...events,
+          {
+            id: `${events.length > 0 ? parseInt(events[events.length - 1].id as string) + 1 : 1}`,
+            title: eventTitle,
+            start: startDate,
+            end: endDate,
+            allDay: isTimeSelectVisible ? false : true,
+          },
+        ]);
+      }
+      showToast("일정이 추가되었습니다.", "checked");
+      setIsEditModal(false);
+      handleClose();
     } else {
-      setEvents([
-        ...events,
-        {
-          id: `${events.length > 0 ? parseInt(events[events.length - 1].id as string) + 1 : 1}`,
-          title: eventTitle,
-          start: startDate,
-          end: endDate,
-          allDay: isTimeSelectVisible ? false : true,
-        },
-      ]);
+      showToast("일정 제목을 입력해주세요.", "warning");
     }
-    setIsEditModal(false);
-    showToast("일정이 추가되었습니다.", "checked");
-    handleClose();
   };
   const getDefaultTime = (date: Date | undefined): number[] | undefined => {
     if (date) {

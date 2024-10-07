@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { useUIStateStore } from "@/context/useUIStateStore";
 import TodoModal from "@/components/features/todoModal/TodoModal";
 import { format } from "date-fns";
+import { useToast } from "@/utils/toastUtils";
 const Todolist = () => {
+  const { showToast } = useToast();
   const todos = useTodoStore((state) => state.todos);
   const addTodo = useTodoStore((state) => state.addTodo);
   const isEditingTodo = useUIStateStore((state) => state.isEditingTodo);
@@ -29,6 +31,24 @@ const Todolist = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
+  const handleAddTodo = () => {
+    if (title) {
+      addTodo(
+        date
+          ? {
+              title: title,
+              completed: false,
+              dueDate: { date: date, allDay: isAllday },
+            }
+          : { title: title, completed: false },
+      );
+      setDate(undefined);
+      showToast("할 일이 추가되었습니다.", "checked");
+      setTitle("");
+    } else {
+      showToast("할 일을 입력해주세요.", "warning");
+    }
+  };
 
   return (
     <div className="flex h-screen w-[calc(100vw-300px)] items-center justify-center bg-[#EBE7FD] p-2">
@@ -37,7 +57,7 @@ const Todolist = () => {
           <div className="text-5xl font-extrabold"> ToDoList</div>
           <div className="flex w-full justify-center gap-4">
             <div className="flex h-12 w-10/12 items-center justify-between rounded-xl border border-[#c5c5c580] p-2">
-              <div className="flex h-full w-[calc(100%-24px)] items-center">
+              <div className="flex h-full w-[calc(100%-24px)] items-center ">
                 <input
                   ref={inputRef}
                   value={title}
@@ -63,19 +83,7 @@ const Todolist = () => {
             </div>
             <div
               className="flex w-[12%] items-center justify-center rounded-xl bg-[#907AD6] p-2"
-              onClick={() => {
-                addTodo(
-                  date
-                    ? {
-                        title: title,
-                        completed: false,
-                        dueDate: { date: date, allDay: isAllday },
-                      }
-                    : { title: title, completed: false },
-                );
-                setDate(undefined);
-                setTitle("");
-              }}
+              onClick={handleAddTodo}
             >
               <FaPlus color="white" size="24" />
             </div>
@@ -89,7 +97,7 @@ const Todolist = () => {
             />
             <label htmlFor="completed_include">완료된 내역 포함</label>
           </div>
-          <div className="flex w-full flex-col gap-4">
+          <div className="scrollbar-hide flex w-full flex-col p-2 gap-4 overflow-auto">
             {todos.map((v) => {
               return completedInclude ? (
                 <TodoItem key={v.id} todo={v} />
